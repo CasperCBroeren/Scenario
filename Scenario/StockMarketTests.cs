@@ -29,14 +29,14 @@ namespace ScenarioTests
         }
 
         [Fact]
-        public void OrderBookMatch()
+        public void DumpStockPriceDrop()
         {
             var s = new Scenario<StockState>();
             s.Add(new StockScenarioEvent(100, false), DateTime.Now);
-            s.Add(new DumpStockScenarioEvent(80, true), DateTime.Now);
+            s.Add(new DumpStockScenarioEvent(20, 10), DateTime.Now);
             s.Add(new StockScenarioEvent(101, true), DateTime.Now);
 
-            s.GetState(DateTime.Now).StockPrice.ShouldBe(80);
+            s.GetState(DateTime.Now).StockPrice.ShouldBe(40);
         }
     }
 }

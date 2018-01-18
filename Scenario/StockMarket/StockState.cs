@@ -15,9 +15,7 @@ namespace ScenarioTests
                         BidPrices.Count > 0 && AskPrices.Count == 0 ? BidPrices.First() : 0;
             }
         }
-        /// <summary>
-        /// TODO: Change the sortedlist to something more elegant
-        /// </summary>
+
         public SortedSet<decimal> AskPrices { get; private set; }
         public SortedSet<decimal> BidPrices { get; private set; }
 

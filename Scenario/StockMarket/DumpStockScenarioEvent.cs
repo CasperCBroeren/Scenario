@@ -1,19 +1,19 @@
 ﻿using ScenarioCore;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ScenarioTests
 {
     public class DumpStockScenarioEvent : IScenarioEvent<StockState>
-    {
-        private bool bid;
+    { 
         private decimal value;
 
-        public DumpStockScenarioEvent(decimal value, bool bid)
+        public DumpStockScenarioEvent(decimal value, int amount)
         {
             this.value = value;
-            this.bid = bid;
+            this.amount = amount;
         }
+
+        public int amount { get; }
 
         public StockState Execute(StockState prevState)
         {
@@ -24,33 +24,14 @@ namespace ScenarioTests
             }
             else
             {
-                newState = new StockState(prevState.AskPrices, prevState.BidPrices); 
+                newState = new StockState(prevState.AskPrices, prevState.BidPrices);
             }
 
-            if (bid)
+            for (int i = 0; i < amount; i++)
             {
-                if (newState.AskPrices.Count > 0 && newState.AskPrices.First() < value)
-                {
-                    //orderbook match!
-                    newState.AskPrices.Remove(newState.AskPrices.First());
-                }
-                else
-                {
-                    newState.BidPrices.Add(value);
-                }
+                newState.AskPrices.Add(value);
             }
-            else
-            {
-                if (newState.BidPrices.Count > 0 && newState.BidPrices.First() > value)
-                {
-                    //orderbook match!
-                    newState.BidPrices.Remove(newState.BidPrices.First());
-                }
-                else
-                {
-                    newState.AskPrices.Add(value);
-                }
-            }
+
             return newState;
         }
     }
