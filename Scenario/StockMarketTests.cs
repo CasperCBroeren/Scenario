@@ -11,8 +11,18 @@ namespace ScenarioTests
         public void BasicTest()
         {
             var s = new Scenario<StockState>();
-            s.Add(new StockScenarioEvent(100, true), DateTime.Now);
-            s.Add(new StockScenarioEvent(80, false), DateTime.Now);
+            s.Add(new StockScenarioEvent(100, OrderType.Bid), DateTime.Now);
+            s.Add(new StockScenarioEvent(80, OrderType.Ask), DateTime.Now);
+
+            s.GetState(DateTime.Now).StockPrice.ShouldBe(0);
+        }
+
+        [Fact]
+        public void BasicTestReverse()
+        {
+            var s = new Scenario<StockState>();
+            s.Add(new StockScenarioEvent(100, OrderType.Ask), DateTime.Now);
+            s.Add(new StockScenarioEvent(80, OrderType.Bid), DateTime.Now);
 
             s.GetState(DateTime.Now).StockPrice.ShouldBe(90);
         }
@@ -21,9 +31,9 @@ namespace ScenarioTests
         public void OrderBookMatch()
         {
             var s = new Scenario<StockState>();
-            s.Add(new StockScenarioEvent(100, true), DateTime.Now);
-            s.Add(new StockScenarioEvent(80, false), DateTime.Now);
-            s.Add(new StockScenarioEvent(101, false), DateTime.Now);
+            s.Add(new StockScenarioEvent(100, OrderType.Ask), DateTime.Now);
+            s.Add(new StockScenarioEvent(80, OrderType.Bid), DateTime.Now);
+            s.Add(new StockScenarioEvent(101, OrderType.Bid), DateTime.Now);
 
             s.GetState(DateTime.Now).StockPrice.ShouldBe(80);
         }
@@ -32,11 +42,13 @@ namespace ScenarioTests
         public void DumpStockPriceDrop()
         {
             var s = new Scenario<StockState>();
-            s.Add(new StockScenarioEvent(100, true), DateTime.Now);
+            s.Add(new StockScenarioEvent(100, OrderType.Bid), DateTime.Now);
             s.Add(new DumpStockScenarioEvent(20, 10), DateTime.Now);
-            s.Add(new StockScenarioEvent(101, true), DateTime.Now);
+            s.Add(new StockScenarioEvent(101, OrderType.Bid), DateTime.Now);
 
-            s.GetState(DateTime.Now).StockPrice.ShouldBe(60.5m);
+            s.GetState(DateTime.Now).StockPrice.ShouldBe(20);
         }
+
+      
     }
 }

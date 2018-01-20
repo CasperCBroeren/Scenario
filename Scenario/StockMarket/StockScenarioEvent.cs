@@ -6,13 +6,13 @@ namespace ScenarioTests
 {
     public class StockScenarioEvent : IScenarioEvent<StockState>
     {
-        private bool bid;
+        private OrderType orderType;
         private decimal value;
 
-        public StockScenarioEvent(decimal value, bool bid)
+        public StockScenarioEvent(decimal value, OrderType bid)
         {
             this.value = value;
-            this.bid = bid;
+            this.orderType = bid;
         }
 
         public StockState Execute(StockState prevState)
@@ -27,9 +27,9 @@ namespace ScenarioTests
                 newState = new StockState(prevState.AskPrices, prevState.BidPrices); 
             }
 
-            if (bid)
+            if (OrderType.Bid == orderType)
             {
-                if (newState.AskPrices.Count > 0 && newState.AskPrices.First() >= value)
+                if (newState.AskPrices.Count > 0 && newState.AskPrices.First() <= value)
                 {
                     //orderbook match!
                     newState.AskPrices.Remove(newState.AskPrices.First());
@@ -41,7 +41,7 @@ namespace ScenarioTests
             }
             else
             {
-                if (newState.BidPrices.Count > 0 && newState.BidPrices.Last() <= value)
+                if (newState.BidPrices.Count > 0 && newState.BidPrices.Last() >= value)
                 {
                     //orderbook match!
                     newState.BidPrices.Remove(newState.BidPrices.Last());

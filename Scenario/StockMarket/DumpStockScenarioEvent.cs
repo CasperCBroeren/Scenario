@@ -30,7 +30,7 @@ namespace ScenarioTests
 
             for (int i = 0; i < amount; i++)
             {
-                if (newState.BidPrices.Count > 0 && newState.BidPrices.Last() <= value)
+                if (newState.BidPrices.Count > 0 && newState.BidPrices.Last() >= value)
                 {
                     //orderbook match!
                     newState.BidPrices.Remove(newState.BidPrices.Last());
