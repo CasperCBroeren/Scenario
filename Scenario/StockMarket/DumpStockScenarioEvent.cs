@@ -1,5 +1,6 @@
 ﻿using ScenarioCore;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ScenarioTests
 {
@@ -20,7 +21,7 @@ namespace ScenarioTests
             StockState newState = null;
             if (prevState == null)
             {
-                newState = new StockState(new SortedSet<decimal>(), new SortedSet<decimal>());
+                newState = new StockState(new List<decimal>(), new List<decimal>());
             }
             else
             {
@@ -29,9 +30,18 @@ namespace ScenarioTests
 
             for (int i = 0; i < amount; i++)
             {
-                newState.AskPrices.Add(value);
+                if (newState.BidPrices.Count > 0 && newState.BidPrices.Last() <= value)
+                {
+                    //orderbook match!
+                    newState.BidPrices.Remove(newState.BidPrices.Last());
+                }
+                else
+                {
+                    newState.AskPrices.Add(value);
+                }
             }
-
+            newState.AskPrices.Sort();
+            newState.BidPrices.Sort();
             return newState;
         }
     }

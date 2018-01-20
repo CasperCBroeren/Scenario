@@ -44,9 +44,10 @@ namespace ScenarioTests
         public void NoEvents()
         {
             var s = new Scenario<BankState>();
-
-            var last = s.GetState(DateTime.Now.AddHours(5)) as BankState;
-            last.ShouldBeNull();
+            Should.Throw<Exception>(() =>
+            {
+                var last = s.GetState(DateTime.Now.AddHours(5)) as BankState;
+            });
         }
 
         [Fact]

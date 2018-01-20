@@ -20,7 +20,7 @@ namespace ScenarioTests
             StockState newState = null;
             if (prevState == null)
             {
-                newState = new StockState(new SortedSet<decimal>(), new SortedSet<decimal>());
+                newState = new StockState(new List<decimal>(), new List<decimal>());
             }
             else
             {
@@ -29,7 +29,7 @@ namespace ScenarioTests
 
             if (bid)
             {
-                if (newState.AskPrices.Count > 0 && newState.AskPrices.First() < value)
+                if (newState.AskPrices.Count > 0 && newState.AskPrices.First() >= value)
                 {
                     //orderbook match!
                     newState.AskPrices.Remove(newState.AskPrices.First());
@@ -41,16 +41,17 @@ namespace ScenarioTests
             }
             else
             {
-                if (newState.BidPrices.Count > 0 && newState.BidPrices.First() > value)
+                if (newState.BidPrices.Count > 0 && newState.BidPrices.Last() <= value)
                 {
                     //orderbook match!
-                    newState.BidPrices.Remove(newState.BidPrices.First());
+                    newState.BidPrices.Remove(newState.BidPrices.Last());
                 }
                 else
                 {
                     newState.AskPrices.Add(value);
                 }
             }
+            newState.AskPrices.Sort(); ;
             return newState;
         }
     }

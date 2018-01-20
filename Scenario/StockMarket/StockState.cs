@@ -10,16 +10,16 @@ namespace ScenarioTests
         {
             get
             {
-                return AskPrices.Count > 0 && BidPrices.Count > 0 ? (AskPrices.First() + BidPrices.First()) / 2:
+                return AskPrices.Count > 0 && BidPrices.Count > 0 ? (AskPrices.First() + BidPrices.Last()) / 2:
                         AskPrices.Count >0 && BidPrices.Count == 0 ? AskPrices.First() :
-                        BidPrices.Count > 0 && AskPrices.Count == 0 ? BidPrices.First() : 0;
+                        BidPrices.Count > 0 && AskPrices.Count == 0 ? BidPrices.Last() : 0;
             }
         }
 
-        public SortedSet<decimal> AskPrices { get; private set; }
-        public SortedSet<decimal> BidPrices { get; private set; }
+        public List<decimal> AskPrices { get; private set; }
+        public List<decimal> BidPrices { get; private set; }
 
-        public StockState(SortedSet<decimal> askPrices, SortedSet<decimal> bidPrices)
+        public StockState(List<decimal> askPrices, List<decimal> bidPrices)
         {
             AskPrices = askPrices;
             BidPrices = bidPrices;
