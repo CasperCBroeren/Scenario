@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Firebase\Firebase.csproj" />
     <ProjectReference Include="..\Scenario.Core\ScenarioCore.csproj" />
   </ItemGroup>
 
