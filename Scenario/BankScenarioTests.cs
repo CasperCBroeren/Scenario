@@ -21,9 +21,9 @@ namespace ScenarioTests
             s.Add(t1, DateTime.Now.AddMinutes(3));
             s.Add(t2, DateTime.Now.AddHours(2));
             s.Add(t3, DateTime.Now.AddDays(4));
-            var last = s.GetState(DateTime.Now.AddHours(5)) as BankState;
+            var last = s.GetState(DateTime.Now.AddDays(-1), DateTime.Now.AddHours(5)) as BankState;
             last.Balance.ShouldBe(10);
-            last = s.GetState(DateTime.Now.AddDays(10)) as BankState;
+            last = s.GetState(DateTime.Now.AddDays(-1), DateTime.Now.AddDays(10)) as BankState;
             last.Balance.ShouldBe(30);
         }
 
@@ -35,7 +35,7 @@ namespace ScenarioTests
             var t1 = new BankScenarioEvent(100);
             s.Add(t0, DateTime.Now);
             s.Add(t1, DateTime.Now.AddMinutes(3));
-            var last  = s.GetState(DateTime.Now.AddDays(10)) as BankState;
+            var last  = s.GetState(DateTime.Now.AddDays(-1), DateTime.Now.AddDays(10)) as BankState;
             last.Balance.ShouldBe(102);
         }
 
@@ -46,7 +46,7 @@ namespace ScenarioTests
             var s = new Scenario<BankState>();
             Should.Throw<Exception>(() =>
             {
-                var last = s.GetState(DateTime.Now.AddHours(5)) as BankState;
+                var last = s.GetState(DateTime.Now.AddDays(-1), DateTime.Now.AddHours(5)) as BankState;
             });
         }
 
@@ -63,7 +63,7 @@ namespace ScenarioTests
             s.Add(t1, next3Minutes);
             s.Add(t2, next3Minutes);
             s.Add(t3, next3Minutes);
-            var last = s.GetState(DateTime.Now.AddHours(5)) as BankState; 
+            var last = s.GetState(DateTime.Now.AddDays(-1), DateTime.Now.AddHours(5)) as BankState; 
             last.Balance.ShouldBe(30);
         }
 
@@ -79,7 +79,7 @@ namespace ScenarioTests
             s.Add(t1, DateTime.Now.AddMinutes(4));
             s.Add(t2, DateTime.Now.AddMinutes(2));
             s.Add(t3, DateTime.Now.AddMinutes(1));
-            var last = s.GetState(DateTime.Now.AddHours(5)) as BankState;
+            var last = s.GetState(DateTime.Now.AddDays(-1), DateTime.Now.AddHours(5)) as BankState;
             last.Balance.ShouldBe(30);
         }
 
@@ -99,7 +99,7 @@ namespace ScenarioTests
                 DateTime next3Minutes = DateTime.Now.AddHours(3);
                 s.Add(t1, next3Minutes);
             }
-            var last = s.GetState(DateTime.Now.AddYears(5)) as BankState;
+            var last = s.GetState(DateTime.Now.AddDays(-1), DateTime.Now.AddYears(5)) as BankState;
             last.Balance.ShouldBe(1800);
         }
     }

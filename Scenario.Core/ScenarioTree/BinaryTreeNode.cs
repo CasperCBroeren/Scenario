@@ -2,31 +2,27 @@
 
 namespace ScenarioCore.ScenarioTree
 {
-    public class ScenarioTreeNode<ScenarioEvent> 
+    public class BinaryTreeNode<ScenarioEvent> 
     {
-        public bool Dirty { get; set; }
-
+       
         public DateTime At { get; set; }
         public ScenarioEvent Item { get; set; }
-        public ScenarioTreeNode<ScenarioEvent> Left { get; internal set; }
-        public ScenarioTreeNode<ScenarioEvent> Right { get; internal set; }
-        public IState CachedState { get; internal set; }
+        public BinaryTreeNode<ScenarioEvent> Left { get; internal set; }
+        public BinaryTreeNode<ScenarioEvent> Right { get; internal set; }
 
-        public ScenarioTreeNode(DateTime at, ScenarioEvent item)
+        public BinaryTreeNode(DateTime at, ScenarioEvent item)
         {
             At = at;
-            Item = item;
-            Dirty = true;
+            Item = item; 
         }
 
         internal void Add(DateTime at, ScenarioEvent scenarioEvent)
-        {
-            Dirty = true;
+        { 
             if (At < at)
             {
                 if (Right == null)
                 {
-                    Right = new ScenarioTreeNode<ScenarioEvent>(at, scenarioEvent);
+                    Right = new BinaryTreeNode<ScenarioEvent>(at, scenarioEvent);
                 }
                 else
                 {
@@ -38,7 +34,7 @@ namespace ScenarioCore.ScenarioTree
             {
                 if (Left == null)
                 {
-                    Left = new ScenarioTreeNode<ScenarioEvent>(at, scenarioEvent);
+                    Left = new BinaryTreeNode<ScenarioEvent>(at, scenarioEvent);
                 }
                 else
                 {
